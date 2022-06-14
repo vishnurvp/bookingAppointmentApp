@@ -1,5 +1,7 @@
 
 
+
+
 // USER FORM SCRIPT
 
 // Put DOM elements into variables
@@ -10,6 +12,15 @@ const msg = document.querySelector('.msg');
 const userList = document.querySelector('#users');
 
 let userDetails = {};
+
+// get and set userDetails when page refreshes
+if (localStorage.userDetails) {
+    userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    const li = document.createElement('li');
+    li.appendChild(document.createTextNode(`${userDetails.name}: ${userDetails.email}`));
+    userList.appendChild(li);
+}
+
 
 // Listen for form submit
 myForm.addEventListener('submit', onSubmit);
