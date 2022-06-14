@@ -1,5 +1,9 @@
 
+// dom load event
 
+// window.addEventListener('DOMContentLoaded', (event) => {
+//     userDetails = JSON.parse(localStorage.getItem('userDetails'));
+// });
 
 
 // USER FORM SCRIPT
@@ -11,15 +15,17 @@ const emailInput = document.querySelector('#email');
 const msg = document.querySelector('.msg');
 const userList = document.querySelector('#users');
 
-let userDetails = {};
+
+// use array for storage
+let userDetails = [];
 
 // get and set userDetails when page refreshes
 if (localStorage.userDetails) {
     // userDetails has multiple users
     userDetails = JSON.parse(localStorage.getItem('userDetails'));
-    for (user in userDetails) {
+    for (user of userDetails) {
         const li = document.createElement('li');
-        li.appendChild(document.createTextNode(`${userDetails[user].name}: ${userDetails[user].email}`));
+        li.appendChild(document.createTextNode(`${user.name}: ${user.email}`));
         userList.appendChild(li);
     }
 }
@@ -39,7 +45,7 @@ function onSubmit(e) {
     let user = {};
     user.name = nameInput.value;
     user.email = emailInput.value;
-    userDetails[user.name] = user;
+    userDetails.push(user);
     // store in local sorage
     localStorage.setItem('userDetails', JSON.stringify(userDetails));
 
