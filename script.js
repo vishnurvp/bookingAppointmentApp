@@ -15,10 +15,13 @@ let userDetails = {};
 
 // get and set userDetails when page refreshes
 if (localStorage.userDetails) {
+    // userDetails has multiple users
     userDetails = JSON.parse(localStorage.getItem('userDetails'));
-    const li = document.createElement('li');
-    li.appendChild(document.createTextNode(`${userDetails.name}: ${userDetails.email}`));
-    userList.appendChild(li);
+    for (user in userDetails) {
+        const li = document.createElement('li');
+        li.appendChild(document.createTextNode(`${userDetails[user].name}: ${userDetails[user].email}`));
+        userList.appendChild(li);
+    }
 }
 
 
@@ -33,8 +36,10 @@ function onSubmit(e) {
     setTimeout(() => msg.remove(), 3000);
   } else {
     // construct object
-    userDetails.name = nameInput.value;
-    userDetails.email = emailInput.value;
+    let user = {};
+    user.name = nameInput.value;
+    user.email = emailInput.value;
+    userDetails[user.name] = user;
     // store in local sorage
     localStorage.setItem('userDetails', JSON.stringify(userDetails));
 
