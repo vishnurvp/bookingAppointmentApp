@@ -59,6 +59,27 @@
     border-radius: 5px;
     margin: 5px 0;
   }
+
+  .lbtn {
+    display: inline;
+    width: 20%;
+    padding: 10px 15px;
+    border: 0;
+    background: rgb(58, 133, 76);
+    color: #fff;
+    border-radius: 5px;
+    margin: 5px 0;
+  }
+  .delbtn {
+    display: inline;
+    width: 20%;
+    padding: 10px 15px;
+    border: 0;
+    background: rgb(211, 74, 74);
+    color: #fff;
+    border-radius: 5px;
+    margin: 5px 0;
+  }
   
   .btn:hover {
     background: #444;
