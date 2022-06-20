@@ -26,34 +26,32 @@ let users;
 axios.get('https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData')
 .then((response)=>{
     users=response.data;
-    // console.log(users);
-    dispUsers(users);
+    console.log(users);
+    if (users.length===0) return;
+    for (let user of users) {dispUser(user);}
 })
 .catch(err=>console.log(err));
 
-function dispUsers(users) {
-    if (users.length===0) return;
-    for (let user of users) {
-        const li = document.createElement('li');
-        li.className = 'list-items';
-        li.email = user.email;
-        li.name = user.name;
-        li.id = user._id;
-        li.appendChild(document.createTextNode(`${user.name}: ${user.email}`));
-    
-        let edit = document.createElement('button');
-        edit.className = 'lbtn edit ';
-        edit.appendChild(document.createTextNode('Edit'))
-        li.appendChild(edit);
-    
-        const delButton = document.createElement('button');
-        delButton.className = 'lbtn delbtn delete';
-        delButton.appendChild(document.createTextNode('X'));
-        li.appendChild(delButton);
-    
-        userList.appendChild(li);
-        count++;
-    }
+function dispUser(user) {
+    const li = document.createElement('li');
+    li.className = 'list-items';
+    li.email = user.email;
+    li.name = user.name;
+    li.id = user._id;
+    li.appendChild(document.createTextNode(`${user.name}: ${user.email}`));
+
+    let edit = document.createElement('button');
+    edit.className = 'lbtn edit ';
+    edit.appendChild(document.createTextNode('Edit'))
+    li.appendChild(edit);
+
+    const delButton = document.createElement('button');
+    delButton.className = 'lbtn delbtn delete';
+    delButton.appendChild(document.createTextNode('X'));
+    li.appendChild(delButton);
+
+    userList.appendChild(li);
+    count++;
 }
 
 
@@ -114,30 +112,33 @@ function onSubmit(e) {
     localStorage.setItem('userDetails', JSON.stringify(userDetails));
     axios.post("https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData",user)
     .then((response)=>{
-        console.log(response);
+        // console.log(response);
+        // console.log(response.data._id);
+        dispUser(response.data);
     })
     .catch(err=>console.log(err));
 
-    const li = document.createElement('li');
-    li.email = user.email;
-    li.name = user.name;
-    li.index = count;
-    count++;
+    // const li = document.createElement('li');
+    // li.email = user.email;
+    // li.name = user.name;
+    // li.id = user._id;
+    // li.index = count;
+    // count++;
 
 
-    let edit = document.createElement('button');
-    edit.className = 'edit lbtn';
-    edit.appendChild(document.createTextNode('Edit'))
-    li.appendChild(document.createTextNode(`${nameInput.value}: ${emailInput.value}`));
-    li.appendChild(edit);
+    // let edit = document.createElement('button');
+    // edit.className = 'edit lbtn';
+    // edit.appendChild(document.createTextNode('Edit'))
+    // li.appendChild(document.createTextNode(`${nameInput.value}: ${emailInput.value}`));
+    // li.appendChild(edit);
 
 
-    const delButton = document.createElement('button');
-    delButton.className = 'lbtn delbtn delete';
-    delButton.appendChild(document.createTextNode('X'));
-    li.appendChild(delButton);
+    // const delButton = document.createElement('button');
+    // delButton.className = 'lbtn delbtn delete';
+    // delButton.appendChild(document.createTextNode('X'));
+    // li.appendChild(delButton);
 
-    userList.appendChild(li);
+    // userList.appendChild(li);
 
 
     nameInput.value = '';
