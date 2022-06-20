@@ -158,6 +158,8 @@ function removeItem(e){
             break;
         }
         localStorage.setItem('userDetails', JSON.stringify(userDetails));
+        let url = `https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData/${li.id}`;
+        axios.delete(url).then(res=>console.log(res)).catch(err=>console.log(err));
     }
 }
 
