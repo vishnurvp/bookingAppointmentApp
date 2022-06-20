@@ -1,6 +1,6 @@
-let config = {
-    headers: {"Access-Control-Allow-Origin": "*"}
-  }
+// let config = {
+//     headers: {"Access-Control-Allow-Origin": "*"}
+//   }
 // dom load event
 
 // window.addEventListener('DOMContentLoaded', (event) => {
@@ -21,33 +21,69 @@ const userList = document.querySelector('#users');
 // use array for storage
 let userDetails = [];
 let count = 0;
-// get and set userDetails when page refreshes
-if (localStorage.userDetails) {
-    // userDetails has multiple users
-    userDetails = JSON.parse(localStorage.getItem('userDetails'));
 
-    for (user of userDetails) {
+let users;
+axios.get('https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData')
+.then((response)=>{
+    users=response.data;
+    // console.log(users);
+    dispUsers(users);
+})
+.catch(err=>console.log(err));
+
+function dispUsers(users) {
+    if (users.length===0) return;
+    for (let user of users) {
         const li = document.createElement('li');
         li.className = 'list-items';
         li.email = user.email;
         li.name = user.name;
-        li.index = count;
+        li.id = user._id;
         li.appendChild(document.createTextNode(`${user.name}: ${user.email}`));
-
+    
         let edit = document.createElement('button');
         edit.className = 'lbtn edit ';
         edit.appendChild(document.createTextNode('Edit'))
         li.appendChild(edit);
-
+    
         const delButton = document.createElement('button');
         delButton.className = 'lbtn delbtn delete';
         delButton.appendChild(document.createTextNode('X'));
         li.appendChild(delButton);
-
+    
         userList.appendChild(li);
         count++;
     }
 }
+
+
+
+// // get and set userDetails when page refreshes
+// if (localStorage.userDetails) {
+//     // userDetails has multiple users
+//     userDetails = JSON.parse(localStorage.getItem('userDetails'));
+//     for (let user of userDetails) {
+//         const li = document.createElement('li');
+//         li.className = 'list-items';
+//         li.email = user.email;
+//         li.name = user.name;
+//         li.index = count;
+//         li.appendChild(document.createTextNode(`${user.name}: ${user.email}`));
+
+//         let edit = document.createElement('button');
+//         edit.className = 'lbtn edit ';
+//         edit.appendChild(document.createTextNode('Edit'))
+//         li.appendChild(edit);
+
+//         const delButton = document.createElement('button');
+//         delButton.className = 'lbtn delbtn delete';
+//         delButton.appendChild(document.createTextNode('X'));
+//         li.appendChild(delButton);
+
+//         userList.appendChild(li);
+//         count++;
+//     }
+// }
 
 
 // Listen for form submit
