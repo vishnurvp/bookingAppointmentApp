@@ -1,4 +1,6 @@
-
+let config = {
+    headers: {"Access-Control-Allow-Origin": "*"}
+  }
 // dom load event
 
 // window.addEventListener('DOMContentLoaded', (event) => {
@@ -74,6 +76,11 @@ function onSubmit(e) {
     }
     // store in local sorage
     localStorage.setItem('userDetails', JSON.stringify(userDetails));
+    axios.post("https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData",user)
+    .then((response)=>{
+        console.log(response);
+    })
+    .catch(err=>console.log(err));
 
     const li = document.createElement('li');
     li.email = user.email;
@@ -129,7 +136,6 @@ function editItem(e){
             userDetails.splice(i, 1);
             break;
         }
-        localStorage.setItem('userDetails', JSON.stringify(userDetails));
         nameInput.value = li.name;
         emailInput.value = li.email;
 
