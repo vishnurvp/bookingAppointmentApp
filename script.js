@@ -152,12 +152,12 @@ function removeItem(e){
     if (e.target.classList.contains('delete')) {
         let li = e.target.parentElement;
         userList.removeChild(li);
-        for (let i=0; i<userDetails.length; i++) {
-            if (userDetails[i].email === li.email) 
-            userDetails.splice(i, 1);
-            break;
-        }
-        localStorage.setItem('userDetails', JSON.stringify(userDetails));
+        // for (let i=0; i<userDetails.length; i++) {
+        //     if (userDetails[i].email === li.email) 
+        //     userDetails.splice(i, 1);
+        //     break;
+        // }
+        // localStorage.setItem('userDetails', JSON.stringify(userDetails));
         let url = `https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData/${li.id}`;
         axios.delete(url).then(res=>console.log(res)).catch(err=>console.log(err));
     }
@@ -167,17 +167,17 @@ function removeItem(e){
 userList.addEventListener('click', editItem);
 function editItem(e){
     if (e.target.classList.contains('edit')) {
-        
         let li = e.target.parentElement;
         userList.removeChild(li);
-        for (let i=0; i<userDetails.length; i++) {
-            if (userDetails[i].email === li.email) 
-            userDetails.splice(i, 1);
-            break;
-        }
+        // for (let i=0; i<userDetails.length; i++) {
+        //     if (userDetails[i].email === li.email) 
+        //     userDetails.splice(i, 1);
+        //     break;
+        // }
         nameInput.value = li.name;
         emailInput.value = li.email;
-
+        let url = `https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData/${li.id}`;
+        axios.delete(url).then(res=>console.log(res)).catch(err=>console.log(err));
 
     }
 }
