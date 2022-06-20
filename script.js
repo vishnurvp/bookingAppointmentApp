@@ -1,14 +1,3 @@
-// let config = {
-//     headers: {"Access-Control-Allow-Origin": "*"}
-//   }
-// dom load event
-
-// window.addEventListener('DOMContentLoaded', (event) => {
-//     userDetails = JSON.parse(localStorage.getItem('userDetails'));
-// });
-
-
-// USER FORM SCRIPT
 
 // Put DOM elements into variables
 const myForm = document.querySelector('#my-form');
@@ -17,21 +6,19 @@ const emailInput = document.querySelector('#email');
 const msg = document.querySelector('.msg');
 const userList = document.querySelector('#users');
 
+// Get crudcrud URL and create a route
+let crudURL = 'https://crudcrud.com/api/a45e37be7bc34c0dba17dfb85a666ff5/appointmentData';
 
-// use array for storage
-let userDetails = [];
-let count = 0;
-
-let users;
-axios.get('https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData')
+// get existing users data from crudcrud
+axios.get(crudURL)
 .then((response)=>{
-    users=response.data;
-    console.log(users);
-    if (users.length===0) return;
+    let users=response.data;
+    if (users.length===0) return; // if no data, do nothing
     for (let user of users) {dispUser(user);}
 })
 .catch(err=>console.log(err));
 
+// display user function
 function dispUser(user) {
     const li = document.createElement('li');
     li.className = 'list-items';
@@ -51,37 +38,8 @@ function dispUser(user) {
     li.appendChild(delButton);
 
     userList.appendChild(li);
-    count++;
 }
 
-
-
-// // get and set userDetails when page refreshes
-// if (localStorage.userDetails) {
-//     // userDetails has multiple users
-//     userDetails = JSON.parse(localStorage.getItem('userDetails'));
-//     for (let user of userDetails) {
-//         const li = document.createElement('li');
-//         li.className = 'list-items';
-//         li.email = user.email;
-//         li.name = user.name;
-//         li.index = count;
-//         li.appendChild(document.createTextNode(`${user.name}: ${user.email}`));
-
-//         let edit = document.createElement('button');
-//         edit.className = 'lbtn edit ';
-//         edit.appendChild(document.createTextNode('Edit'))
-//         li.appendChild(edit);
-
-//         const delButton = document.createElement('button');
-//         delButton.className = 'lbtn delbtn delete';
-//         delButton.appendChild(document.createTextNode('X'));
-//         li.appendChild(delButton);
-
-//         userList.appendChild(li);
-//         count++;
-//     }
-// }
 
 
 // Listen for form submit
@@ -94,52 +52,15 @@ function onSubmit(e) {
     msg.innerHTML = 'Please enter all fields';
     setTimeout(() => msg.remove(), 3000);
   } else {
-    // construct object
     let user = {};
     user.name = nameInput.value;
     user.email = emailInput.value;
-    let flag = true;
-    for (let i=0; i<userDetails.length; i++) {
-        if (userDetails[i].email === user.email){
-            flag = false;
-            userDetails[i].name = user.name;
-        } 
-    }
-    if (flag) {
-        userDetails.push(user);
-    }
-    // store in local sorage
-    localStorage.setItem('userDetails', JSON.stringify(userDetails));
-    axios.post("https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData",user)
+    // post to crudcrud and save user data
+    axios.post(crudURL,user)
     .then((response)=>{
-        // console.log(response);
-        // console.log(response.data._id);
         dispUser(response.data);
     })
     .catch(err=>console.log(err));
-
-    // const li = document.createElement('li');
-    // li.email = user.email;
-    // li.name = user.name;
-    // li.id = user._id;
-    // li.index = count;
-    // count++;
-
-
-    // let edit = document.createElement('button');
-    // edit.className = 'edit lbtn';
-    // edit.appendChild(document.createTextNode('Edit'))
-    // li.appendChild(document.createTextNode(`${nameInput.value}: ${emailInput.value}`));
-    // li.appendChild(edit);
-
-
-    // const delButton = document.createElement('button');
-    // delButton.className = 'lbtn delbtn delete';
-    // delButton.appendChild(document.createTextNode('X'));
-    // li.appendChild(delButton);
-
-    // userList.appendChild(li);
-
 
     nameInput.value = '';
     emailInput.value = '';
@@ -152,14 +73,9 @@ function removeItem(e){
     if (e.target.classList.contains('delete')) {
         let li = e.target.parentElement;
         userList.removeChild(li);
-        // for (let i=0; i<userDetails.length; i++) {
-        //     if (userDetails[i].email === li.email) 
-        //     userDetails.splice(i, 1);
-        //     break;
-        // }
-        // localStorage.setItem('userDetails', JSON.stringify(userDetails));
-        let url = `https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData/${li.id}`;
-        axios.delete(url).then(res=>console.log(res)).catch(err=>console.log(err));
+        let url = `${crudURL}/${li.id}`;
+        // delete user data in crudcrud
+        axios.delete(url).catch(err=>console.log(err));
     }
 }
 
@@ -169,15 +85,11 @@ function editItem(e){
     if (e.target.classList.contains('edit')) {
         let li = e.target.parentElement;
         userList.removeChild(li);
-        // for (let i=0; i<userDetails.length; i++) {
-        //     if (userDetails[i].email === li.email) 
-        //     userDetails.splice(i, 1);
-        //     break;
-        // }
         nameInput.value = li.name;
         emailInput.value = li.email;
-        let url = `https://crudcrud.com/api/442aaa4613f84076ae52739f4129b981/appointmentData/${li.id}`;
-        axios.delete(url).then(res=>console.log(res)).catch(err=>console.log(err));
+        let url = `${crudURL}/${li.id}`;
+        // delete user data in crudcrud
+        axios.delete(url).catch(err=>console.log(err));
 
     }
 }
